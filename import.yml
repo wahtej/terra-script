@@ -1,0 +1,7 @@
+# Import play books 
+- name: Install Kubernetes Dependencies
+  import_playbook: k8sdependencies.yml
+- name: Initialaize Kubernetes Master
+  import_playbook: k8s_master.yml
+- name: Get token from master and join workers
+  import_playbook: worker_cluster.yml
