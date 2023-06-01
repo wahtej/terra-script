@@ -24,7 +24,7 @@ variable "security_group_name" {
 
 variable "instance_type" {
  description = "EC2 instance type"
- default = "t2.micro"
+ default = "t2.medium"
  type = string
 }
 
@@ -32,6 +32,6 @@ variable "instance_type" {
 
 variable "ami" {
  description = "AMI ID for the EC2 instance"
- default = "ami-0c94855ba95c71c99"
+ default = "ami-02eb7a4783e7e9317"
  type = string
 }
