@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('cleanup workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        stage('git-clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/wahtej/terra-script.git'
+            }
+        }
+        stage('terraform init') {
+            steps {
+                sh "terraform init"
+            }
+        }
+        stage('terraform apply') {
+            steps {
+                sh "sudo terraform ${terraform} -auto-approve --target=module.module_dev"
+            }
+        }
+        stage('sleep') {
+            steps {
+                sh "sleep 30"
+            }
+        }
+        stage('ansible playbook') {
+            steps {
+                sh "sudo ansible-playbook import.yml --private-key=/root/k8s.pem"
+            }
+        }
+        
+        stage('Fetching-manifestfiles') {
+            steps {
+                git branch: 'main', url: 'https://github.com/wahtej/k8s.manifest.git'
+            }
+        }
+        stage('k8s-playbook-run') {
+            steps {
+                sh "sudo ansible-playbook master.yml --private-key=/root/k8s.pem"
+            }
+        }
+        
+    }
+}
